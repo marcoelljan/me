@@ -31,4 +31,5 @@ backend/node_modules
 backend/logs
 
 # Frontend-specific
+frontend/node_modules
 frontend/dist
