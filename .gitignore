@@ -7,7 +7,6 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Node.js
 node_modules
 dist
 dist-ssr
@@ -23,11 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# Backend-specific
-backend/node_modules
-backend/logs
-
-# Frontend-specific
-frontend/node_modules
-frontend/dist
