@@ -25,7 +25,7 @@ const db = mysql2.createPool(
   db.getConnection(
     (err) =>{
       if(err){
-        console.log("Databas connection failed", err);
+        console.log("Database connection failed", err);
       }
       else{
         console.log("Connected to MySQL Database");
@@ -98,5 +98,5 @@ const db = mysql2.createPool(
 
 
   app.listen(5000, ()=>{
-    console.log("Server running on port 5000")
+    console.log("Server running on Port 5000")
   });
