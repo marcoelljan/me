@@ -89,7 +89,7 @@ const db = mysql2.createPool(
       }
 
       const token = jwt.sign({ id: results[0].id, username: results[0].username}, process.env.JWT_SECRET, { expiresIn:"1h"});
-      res.json({message:"Login successul", token, username: results[0].username});
+      res.json({message:"Login successul", token, username: results[0].username, role: results[0].role});
     });
   }); 
 
