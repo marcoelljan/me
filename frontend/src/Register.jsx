@@ -1,24 +1,40 @@
 import { useState } from "react";
 import axios from "axios";
-import { TextField, Button, Container, Typography, Box } from "@mui/material";
+import { TextField, Button, Container, Typography, Box, FormControl, MenuItem, InputLabel, Select } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import "./App.css";
+
+const RoleSelection = ({ role, setRole }) => (
+  <Select
+    labelId="role-label"
+    value={role}
+    onChange={(e) => {
+      setRole(e.target.value);
+      console.log("Selected Role:", e.target.value); // Log the selected role
+    }}
+    variant="outlined"
+  >
+    <MenuItem value="admin">Admin</MenuItem>
+    <MenuItem value="staff">Staff</MenuItem>
+  </Select>
+);
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("staff"); // Default role is "staff"
   const navigate = useNavigate();
 
   const handleRegister = async () => {
-    if (!username || !password) {
+    if (!username || !password || !role) {
       alert("Please fill in all the fields");
       return;
     }
-    
+    console.log("Request:", { username, password, role });
     try {
       const response = await axios.post(
         "http://localhost:5000/register",
-        { username, password },
+        { username, password, role },
         { headers: { "Content-Type": "application/json" } }
       );
       
@@ -62,12 +78,22 @@ const Register = () => {
           variant="outlined"
           sx={{ backgroundColor: "white" }}
         />
+        <FormControl fullWidth margin="normal">
+          <InputLabel id="role-label" 
+         sx= {{
+           mt: -2,
+          fontSize: "1.5rem",
+         }}
+        
+        >Role</InputLabel>
+          <RoleSelection role={role} setRole={setRole} />
+        </FormControl>
         <Button
           variant="contained"
           color="primary"
           fullWidth
           onClick={handleRegister}
-          sx={{ mt: 2, borderRadius: "8px", textTransform: "none" }}
+          sx={{ mt: 1, borderRadius: "8px", textTransform: "none" }}
         >
           Register
         </Button>
@@ -86,3 +112,4 @@ const Register = () => {
 };
 
 export default Register;
+

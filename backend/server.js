@@ -35,34 +35,25 @@ const db = mysql2.createPool(
 
   //REGISTER
   
-  app.post("/register", async (req, res) =>{
-    const{username, password} = req.body;
+  app.post("/register", async (req, res) => {
+    const { username, password, role } = req.body;
 
-    if(!username || !password){
-      return res.status(400).json({message: "All fields are required"});
+    console.log ("Received Payload:", {username, password, role});
+
+    if (!username || !password || !role) {
+      return res.status(400).json({ message: "All fields are required" });
     }
 
-
     const hashedPassword = await bcrypt.hash(password, 10);
-    
-    const checkUserSql = "SELECT * FROM userss WHERE username =?";
 
-    db.query(checkUserSql, [username], (err, results) =>{
-        if(err){
-          return res.status(500).json({message: "Database Error"});
-        }
-        if(results.length > 0){
-          return res.status(400).json({message: "Username already exist"});
-        }
-    const insertUserSql = "INSERT INTO userss (username, password) VALUES (?,?)"
-            db.query(insertUserSql, [username, hashedPassword],
-              (err, result) =>{
-                if(err) return res.status(500).json({message: "Registration Failed"});
- 
-                res.status(201).json({message: "User Registered successfully"});
-              });
-        });
-
+    // Save the user to the database
+    db.query("INSERT INTO userss (username, password, role) VALUES (?, ?, ?)", [username, hashedPassword, role], (err, result) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).json({ message: "Database error" });
+      }
+      res.status(201).json({ message: "User registered successfully" });
+    });
   });
 
   //LOGIN USER
@@ -93,10 +84,19 @@ const db = mysql2.createPool(
     });
   }); 
 
-
-
-
+  //DESCRIBE USERS
+  app.get("/describe-userss", (req, res) => {
+    db.query("DESCRIBE userss", (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).json({ message: "Database error" });
+      }
+      res.json(results);
+    });
+  });
 
   app.listen(5000, ()=>{
     console.log("Server running on Port 5000")
   });
+
+ 
