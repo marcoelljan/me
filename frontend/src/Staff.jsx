@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {Container, Typography, Button, Box} from "@mui/material";
 
-const Dashboard = () => {
+const Staff = () => {
 
 const navigate = useNavigate();
 const [username, setUsername] = useState("");
@@ -89,4 +89,4 @@ sx = {{
 );
 };
 
-export default Dashboard;
+export default Staff;

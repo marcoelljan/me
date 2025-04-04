@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {Container, Typography, Button, Box} from "@mui/material";
 
-const Admin = () => {
+const Staff1 = () => {
 
 const navigate = useNavigate();
 const [username, setUsername] = useState("");
-const [role, setRole] = useState("");
+const [role, setRole] = useState("");   
 
 useEffect(() => {
     const storedUser = localStorage.getItem("username");
@@ -16,8 +16,8 @@ useEffect(() => {
         setUsername(storedUser); 
         setRole(storedRole); 
 
-        if (storedRole !== "admin") {
-            alert("Access denied. Admin only.");
+        if (storedRole !== "staff1") {
+            alert("Access denied. Staff1 only.");
             navigate("/login");
         }
     } else {
@@ -39,7 +39,7 @@ return(
 
 
 <Typography variant = "h6" sx = {{ color: "757575" , mb: 10}}>
-    This is the dashboard for admin members only.
+    This is the dashboard for staff1 members only.
 </Typography>
 <Box
 sx = {{
@@ -89,4 +89,4 @@ sx = {{
 );
 };
 
-export default Admin;
+export default Staff1;

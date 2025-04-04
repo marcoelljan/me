@@ -4,6 +4,7 @@ import { TextField, Button, Container, Typography, Box, FormControl, MenuItem, I
 import { useNavigate } from "react-router-dom";
 import "./App.css";
 
+// Selection component for role
 const RoleSelection = ({ role, setRole }) => (
   <Select
     labelId="role-label"
@@ -16,6 +17,8 @@ const RoleSelection = ({ role, setRole }) => (
   >
     <MenuItem value="admin">Admin</MenuItem>
     <MenuItem value="staff">Staff</MenuItem>
+    <MenuItem value="admin1">Admin1</MenuItem>
+    <MenuItem value="staff1">Staff1</MenuItem>
   </Select>
 );
 

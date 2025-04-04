@@ -26,11 +26,16 @@ const Login = () => {
       localStorage.setItem("role", response.data.role); // will store the role
       const role = response.data.role; // extract role from response
       
-     if(role === "admin"){
+      if (role === "admin") {
         navigate("/admin");
-     } else if(role === "staff"){
-        navigate("/dashboard");
-     } else { 
+      } else if (role === "staff") {
+        navigate("/staff");
+      } else if (role === "admin1") {
+        navigate("/admin1");
+      } else if (role === "staff1"){
+        navigate("/staff1");
+      }
+       else {
       alert("Invalid role");
      }
     } catch (error) {
