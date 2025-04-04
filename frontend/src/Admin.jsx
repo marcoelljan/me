@@ -16,8 +16,8 @@ useEffect(() => {
         setUsername(storedUser); 
         setRole(storedRole); 
 
-        if (storedRole !== "staff") {
-            alert("Access denied. Staff only.");
+        if (storedRole !== "admin") {
+            alert("Access denied. Admin only.");
             navigate("/login");
         }
     } else {
@@ -39,7 +39,7 @@ return(
 
 
 <Typography variant = "h6" sx = {{ color: "757575" , mb: 10}}>
-    This is the dashboard for staff members only.
+    This is the dashboard for admin members only.
 </Typography>
 <Box
 sx = {{

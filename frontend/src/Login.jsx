@@ -24,10 +24,17 @@ const Login = () => {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("username", response.data.username);
       localStorage.setItem("role", response.data.role); // will store the role
-      alert("Login Successful");
-      navigate("/dashboard");
+      const role = response.data.role; // extract role from response
+      
+     if(role === "admin"){
+        navigate("/admin");
+     } else if(role === "staff"){
+        navigate("/dashboard");
+     } else { 
+      alert("Invalid role");
+     }
     } catch (error) {
-      alert(error.response?.data?.message || "Invalid Credentials");
+      alert("Login failed");
     }
   };
 
