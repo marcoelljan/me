@@ -1,11 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
-import { TextField, Button, Container, Typography, Box } from "@mui/material";
+import { TextField, Button, Container, Typography, Box, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [selectedRole, setSelectedRole] = useState("admin"); // Default role is "admin"
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -20,24 +22,27 @@ const Login = () => {
         { username, password },
         { headers: { "Content-Type": "application/json" } }
       );
-
+      const roleFromBackend = response.data.role; // role from backend
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("username", response.data.username);
       localStorage.setItem("role", response.data.role); // will store the role
-      const role = response.data.role; // extract role from response
-      
-      if (role === "admin") {
-        navigate("/admin");
-      } else if (role === "staff") {
-        navigate("/staff");
-      } else if (role === "admin1") {
-        navigate("/admin1");
-      } else if (role === "staff1"){
-        navigate("/staff1");
+
+      // Validate role
+      if (selectedRole !== roleFromBackend) {
+        alert("Incorrect role selected. Please try again.");
+        return;
       }
-       else {
-      alert("Invalid role");
-     }
+
+      // Navigate based on correct role
+      if (roleFromBackend === "admin") {
+        navigate("/admin");
+      } else if (roleFromBackend === "staff") {
+        navigate("/staff");
+      } else if (roleFromBackend === "customer") {
+        navigate("/customer");
+      } else {
+        alert("Invalid role");
+      }
     } catch (error) {
       alert("Login failed");
     }
@@ -45,13 +50,13 @@ const Login = () => {
 
   return (
     <Container maxWidth="xs">
-      <Box 
-        sx={{ 
-          textAlign: "center", 
-          p: 3, 
-          borderRadius: 2, 
-          boxShadow: 3, 
-          backgroundColor: "#f9f9f9" 
+      <Box
+        sx={{
+          textAlign: "center",
+          p: 3,
+          borderRadius: 2,
+          boxShadow: 3,
+          backgroundColor: "#f9f9f9",
         }}
       >
         <Typography variant="h4" sx={{ color: "#333", mb: 2 }}>
@@ -68,7 +73,7 @@ const Login = () => {
         />
         <TextField
           label="Password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           fullWidth
           margin="normal"
           value={password}
@@ -76,6 +81,45 @@ const Login = () => {
           variant="outlined"
           sx={{ backgroundColor: "white" }}
         />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={showPassword}
+              onChange={(e) => setShowPassword(e.target.checked)}
+              color="primary"
+            />
+          }
+          label="Show Password"
+          sx={{ mb: 2, ml: -21, mt: -2 }}
+        />
+        <FormControl
+          fullWidth
+          margin="normal"
+          sx={{
+            mt: 2,
+            mb: 2,
+          }}
+        >
+          <InputLabel
+            id="role-label"
+            sx={{
+              mt: -2,
+              fontSize: "1.5rem",
+            }}
+          >
+            Select Role
+          </InputLabel>
+          <Select
+            labelId="role-label"
+            value={selectedRole}
+            onChange={(e) => setSelectedRole(e.target.value)}
+            variant="outlined"
+          >
+            <MenuItem value="admin">Admin</MenuItem>
+            <MenuItem value="staff">Staff</MenuItem>
+            <MenuItem value="customer">Customer</MenuItem>
+          </Select>
+        </FormControl>
         <Button
           variant="contained"
           color="primary"
@@ -95,6 +139,16 @@ const Login = () => {
           Go to Register
         </Button>
       </Box>
+      {/* Forgot Password button outside the box */}
+      <Button
+        variant="text"
+        color="primary"
+        fullWidth
+        onClick={() => navigate("/forgot-password")} // Redirect to Forgot Password page
+        sx={{ mt: 2, textTransform: "none" }}
+      >
+        Forgot Password?
+      </Button>
     </Container>
   );
 };

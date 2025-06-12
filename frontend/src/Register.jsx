@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { TextField, Button, Container, Typography, Box, FormControl, MenuItem, InputLabel, Select } from "@mui/material";
+import { TextField, Button, Container, Typography, Box, FormControl, MenuItem, InputLabel, Select, FormControlLabel, Checkbox,  } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import "./App.css";
 
@@ -15,17 +15,18 @@ const RoleSelection = ({ role, setRole }) => (
     }}
     variant="outlined"
   >
+    
     <MenuItem value="admin">Admin</MenuItem>
     <MenuItem value="staff">Staff</MenuItem>
-    <MenuItem value="admin1">Admin1</MenuItem>
-    <MenuItem value="staff1">Staff1</MenuItem>
+    <MenuItem value="customer">Customer</MenuItem>
   </Select>
 );
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("staff"); // Default role is "staff"
+  const [role, setRole] = useState("admin"); // Default role is "admin"
+ const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = async () => {
@@ -59,7 +60,7 @@ const Register = () => {
           backgroundColor: "#f7f7f8" 
         }}
       >
-        <Typography variant="h4" sx={{ color: "#333", mb: 2 }}>
+        <Typography variant="h4" sx={{ color: "#333", mb: 2,  }}>
           Register
         </Typography>
         <TextField
@@ -73,7 +74,7 @@ const Register = () => {
         />
         <TextField
           label="Password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           fullWidth
           margin="normal"
           value={password}
@@ -81,6 +82,20 @@ const Register = () => {
           variant="outlined"
           sx={{ backgroundColor: "white" }}
         />
+        <FormControlLabel
+        control = {
+          <Checkbox
+          checked={showPassword}
+          onChange={(e)=> setShowPassword(e.target.checked)}
+          />
+        }
+        label = "Show Password"
+        sx={{mb: 2,
+          ml : -21,
+          mt: -2,
+        }}
+        />
+
         <FormControl fullWidth margin="normal">
           <InputLabel id="role-label" 
          sx= {{
@@ -108,6 +123,15 @@ const Register = () => {
           sx={{ mt: 1, borderRadius: "8px", textTransform: "none" }}
         >
           Go to Login
+        </Button>
+        <Button
+          variant="text"
+          color="primary"
+          fullWidth
+          onClick={() => navigate("/forgot-password")} // Redirect to Forgot Password page
+          sx={{ mt: 1, textTransform: "none" }}
+        >
+          Forgot Password?
         </Button>
       </Box>
     </Container>
