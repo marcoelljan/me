@@ -16,7 +16,7 @@ const db = mysql2.createPool(
       host:"localhost",
       user:"root",
       password:"",
-      database:"user_db",
+      database:"crud-app",
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0
@@ -45,7 +45,7 @@ const db = mysql2.createPool(
 
     const hashedPassword = await bcrypt.hash(password, 10);
     
-    const checkUserSql = "SELECT * FROM userss WHERE username =?";
+    const checkUserSql = "SELECT * FROM users WHERE username =?";
 
     db.query(checkUserSql, [username], (err, results) =>{
         if(err){
@@ -54,7 +54,7 @@ const db = mysql2.createPool(
         if(results.length > 0){
           return res.status(400).json({message: "Username already exist"});
         }
-    const insertUserSql = "INSERT INTO userss (username, password) VALUES (?,?)"
+    const insertUserSql = "INSERT INTO users (username, password) VALUES (?,?)"
             db.query(insertUserSql, [username, hashedPassword],
               (err, result) =>{
                 if(err) return res.status(500).json({message: "Registration Failed"});
@@ -73,7 +73,7 @@ const db = mysql2.createPool(
       return res.status(400).json({ message:"All fields are required"});
     }
 
-    const sql = "SELECT * FROM userss WHERE username = ?";
+    const sql = "SELECT * FROM users WHERE username = ?";
     db.query(sql, [username], async (err, results) => {
       if(err || results.length === 0){
         return res.status(400).json({message:"Invalid username or password"});
